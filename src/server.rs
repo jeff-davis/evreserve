@@ -1,7 +1,7 @@
 extern crate http;
 extern crate time;
 
-use std::vec_ng::Vec;
+use std::vec::Vec;
 
 use std::io::net::ip::{SocketAddr, Ipv4Addr};
 use std::io::Writer;
