@@ -1,7 +1,5 @@
-#[crate_id = "evreserver"];
-
-extern crate time;
 extern crate http;
+extern crate time;
 
 use std::vec_ng::Vec;
 
@@ -11,15 +9,19 @@ use std::io::Writer;
 use http::server::{Config, Server, Request, ResponseWriter};
 use http::headers;
 
+mod app;
+
 #[deriving(Clone)]
 pub struct EVReserve;
 
-impl Server for EVReserve {
+impl http::server::Server for EVReserve {
     fn get_config(&self) -> Config {
         Config { bind_address: SocketAddr { ip: Ipv4Addr(127, 0, 0, 1), port: 8001 } }
     }
 
     fn handle_request(&self, _r: &Request, w: &mut ResponseWriter) {
+			  let content = app::get_content().clone();
+				let content_bytes = content.as_bytes();
         w.headers.date = Some(time::now_utc());
         w.headers.server = Some(~"Apache/2.2.22 (Ubuntu)");
         //w.headers.last_modified = Some(~"Thu, 05 May 2011 11:46:42 GMT");
@@ -42,7 +44,7 @@ impl Server for EVReserve {
                                 opaque_tag: ~"501b29-b1-4a285ed47404a" });
         w.headers.accept_ranges = Some(headers::accept_ranges::RangeUnits(
                                             vec!(headers::accept_ranges::Bytes)));
-        w.headers.content_length = Some(177);
+        w.headers.content_length = Some(content_bytes.len());
         w.headers.vary = Some(~"Accept-Encoding");
         w.headers.content_type = Some(headers::content_type::MediaType {
             type_: ~"text",
@@ -51,14 +53,7 @@ impl Server for EVReserve {
         });
         w.headers.extensions.insert(~"X-Pad", ~"avoid browser bug");
 
-        w.write(bytes!("\
-            <html><body><h1>It works!</h1>\n\
-            <p>This is the default web page for this server.</p>\n\
-            <p>The web server software is running but no content has been added, yet.</p>\n\
-            </body></html>\n")).unwrap();
+        w.write(content_bytes).unwrap();
     }
 }
 
-fn main() {
-    EVReserve.serve_forever();
-}
