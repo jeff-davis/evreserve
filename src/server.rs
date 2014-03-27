@@ -21,7 +21,7 @@ impl http::server::Server for EVReserve {
 
     fn handle_request(&self, _r: &Request, w: &mut ResponseWriter) {
         let content = app::get_content();
-        let content_bytes = content.get_bytes();
+        let content_bytes = content.as_bytes();
         w.headers.date = Some(time::now_utc());
         w.headers.server = Some(~"Apache/2.2.22 (Ubuntu)");
         //w.headers.last_modified = Some(~"Thu, 05 May 2011 11:46:42 GMT");
