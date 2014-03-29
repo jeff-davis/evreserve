@@ -9,10 +9,10 @@ pub fn get_content() -> ~str {
 	content.push_str("<html><head><title>Trying Rust!</title></head><body>\n");
 	content.push_str("<ul>\n");
 
-  let conn = PostgresConnection::connect("postgres://jdavis@localhost:5432/postgres", &NoSsl);
+  let conn = PostgresConnection::connect("postgres://jdavis@localhost:5432/postgres", &NoSsl).unwrap();
 	{
-	  let stmt = conn.prepare("SELECT x FROM t");
-	  for row in stmt.query([]) {
+	  let stmt = conn.prepare("SELECT x FROM t").unwrap();
+	  for row in stmt.query([]).unwrap() {
       let val : i32 = row[1];
 	  	content.push_str(format!("<li>{}</li>\n", val));
     }
