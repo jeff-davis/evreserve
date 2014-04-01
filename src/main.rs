@@ -1,4 +1,4 @@
-#[crate_id = "evreserve"];
+#![crate_id = "evreserve"]
 
 extern crate postgres;
 extern crate http;
