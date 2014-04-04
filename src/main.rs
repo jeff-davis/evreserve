@@ -1,4 +1,5 @@
 #![crate_id = "evreserve"]
+#![feature(macro_rules)]
 
 extern crate postgres;
 extern crate http;

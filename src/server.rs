@@ -20,7 +20,10 @@ impl http::server::Server for EVReserve {
     }
 
     fn handle_request(&self, _r: &Request, w: &mut ResponseWriter) {
-        let content = app::get_content();
+        let content : ~str = match app::get_content() {
+						Ok(r) => { r }
+						Err(m) => { m }
+				};
         let content_bytes = content.as_bytes();
         w.headers.date = Some(time::now_utc());
         w.headers.server = Some(~"Apache/2.2.22 (Ubuntu)");
