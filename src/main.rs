@@ -1,7 +1,10 @@
 #![crate_id = "evreserve"]
-#![feature(macro_rules)]
 
+#![feature(phase)]
+
+#[phase(syntax, link)]
 extern crate postgres;
+
 extern crate http;
 
 use http::server::Server;

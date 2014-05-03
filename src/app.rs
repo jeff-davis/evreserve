@@ -17,8 +17,7 @@ pub fn get_content() -> Result<~str, ~str> {
   let mut res = match stmt.query([])
                    { Ok(r) => { r }, Err(e) => { return Err(format!("{}",e)) } };
 
-  let q = Range::new(Some(RangeBound::new(50i32, Inclusive)),
-                     Some(RangeBound::new(60i32, Exclusive)));
+  let q = range!('[' 50i32, 60i32 ')');
 
   for row in res {
     let mut color = "green";
