@@ -1,6 +1,7 @@
 extern crate http;
 extern crate time;
 
+use std::strbuf::StrBuf;
 use std::vec::Vec;
 
 use std::io::net::ip::{SocketAddr, Ipv4Addr};
@@ -26,8 +27,8 @@ impl http::server::Server for EVReserve {
 				};
         let content_bytes = content.as_bytes();
         w.headers.date = Some(time::now_utc());
-        w.headers.server = Some(~"Apache/2.2.22 (Ubuntu)");
-        //w.headers.last_modified = Some(~"Thu, 05 May 2011 11:46:42 GMT");
+        w.headers.server = Some(StrBuf::from_str("Apache/2.2.22 (Ubuntu)"));
+        //w.headers.last_modified = Some(StrBuf::from_str("Thu, 05 May 2011 11:46:42 GMT"));
         w.headers.last_modified = Some(time::Tm {
             tm_sec: 42, // seconds after the minute ~[0-60]
             tm_min: 46, // minutes after the hour ~[0-59]
@@ -44,17 +45,17 @@ impl http::server::Server for EVReserve {
         });
         w.headers.etag = Some(headers::etag::EntityTag {
                                 weak: false,
-                                opaque_tag: ~"501b29-b1-4a285ed47404a" });
+                                opaque_tag: StrBuf::from_str("501b29-b1-4a285ed47404a") });
         w.headers.accept_ranges = Some(headers::accept_ranges::RangeUnits(
                                             vec!(headers::accept_ranges::Bytes)));
         w.headers.content_length = Some(content_bytes.len());
-        w.headers.vary = Some(~"Accept-Encoding");
+        w.headers.vary = Some(StrBuf::from_str("Accept-Encoding"));
         w.headers.content_type = Some(headers::content_type::MediaType {
-            type_: ~"text",
-            subtype: ~"html",
+            type_: StrBuf::from_str("text"),
+            subtype: StrBuf::from_str("html"),
             parameters: Vec::new()
         });
-        w.headers.extensions.insert(~"X-Pad", ~"avoid browser bug");
+        w.headers.extensions.insert(StrBuf::from_str("X-Pad"), StrBuf::from_str("avoid browser bug"));
 
         w.write(content_bytes).unwrap();
     }
