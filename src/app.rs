@@ -5,8 +5,8 @@ use std::fmt::Show;
 
 use postgres::types::range::{Range, RangeBound, Inclusive, Exclusive};
 
-pub fn get_content() -> Result<~str, ~str> {
-  let mut content : StrBuf = StrBuf::new();
+pub fn get_content() -> Result<String, String> {
+  let mut content : String = String::new();
 	content.push_str("<html><head><title>Trying Rust!</title></head><body>\n");
 	content.push_str("<ul>\n");
 
@@ -21,16 +21,16 @@ pub fn get_content() -> Result<~str, ~str> {
 
   for row in res {
     let mut color = "green";
-    let val : Range<i32> = row[1];
+    let val : Range<i32> = row[0u];
     if !q.intersect(&val).is_empty()
     {
        color = "red";
     }
 
-    content.push_str(format!("<li><font color={}>{}</font></li>\n", color, val));
+    content = content + format!("<li><font color={}>{}</font></li>\n", color, val);
   }
 
   content.push_str("</ul>\n");
   content.push_str("</body></html>\n");
-  return Ok(content.into_owned());
+  return Ok(content.into_string());
 }
